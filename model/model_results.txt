@@ -1,0 +1,100 @@
+============================================================
+CRYPTO VOLATILITY FORECAST - MODEL RESULTS
+============================================================
+
+MODEL CONFIGURATION:
+------------------------------------------------------------
+Model: XGBoost Regressor
+Number of Estimators: 1000
+Max Depth: 8
+Learning Rate: 0.001
+Subsample: 0.8
+Colsample by Tree: 0.8
+Min Child Weight: 3
+Gamma: 0.1
+Random State: 42
+
+DATASET INFORMATION:
+------------------------------------------------------------
+Total Features: 41
+Training Samples: 20543
+Validation Samples: 4399
+Test Samples: 4481
+Number of Cryptocurrencies: 95
+
+EVALUATION METRICS:
+------------------------------------------------------------
+RMSE: 2.9764
+MAE: 1.7687
+R2 Score: 0.1737
+
+
+============================================================
+TOP 15 MOST IMPORTANT FEATURES:
+============================================================
+                feature  importance
+price_volume_divergence    0.111476
+    volatility_relative    0.099908
+       realized_vol_30d    0.078458
+        market_cap_rank    0.069591
+        price_range_30d    0.067966
+  realized_vol_relative    0.047930
+        realized_vol_7d    0.045900
+     volume_momentum_7d    0.040104
+         price_range_7d    0.039394
+     volatility_7d_ma30    0.037424
+             market_cap    0.033406
+     volatility_7d_lag7    0.032986
+              price_ma7    0.026713
+              month_sin    0.025286
+                  price    0.021894
+============================================================
+
+ALL FEATURES (sorted by importance):
+------------------------------------------------------------
+                feature  importance
+price_volume_divergence    0.111476
+    volatility_relative    0.099908
+       realized_vol_30d    0.078458
+        market_cap_rank    0.069591
+        price_range_30d    0.067966
+  realized_vol_relative    0.047930
+        realized_vol_7d    0.045900
+     volume_momentum_7d    0.040104
+         price_range_7d    0.039394
+     volatility_7d_ma30    0.037424
+             market_cap    0.033406
+     volatility_7d_lag7    0.032986
+              price_ma7    0.026713
+              month_sin    0.025286
+                  price    0.021894
+          volume_change    0.021798
+ market_volatility_lag7    0.018376
+             return_30d    0.016347
+      volatility_7d_ma7    0.015481
+      market_volatility    0.013025
+             price_ma30    0.012317
+               ma_ratio    0.011440
+                 volume    0.010801
+             return_14d    0.009745
+        downside_vol_7d    0.009268
+    market_realized_vol    0.008840
+volume_volatility_ratio    0.008572
+              return_7d    0.008096
+      cumulative_return    0.007959
+   realized_vol_7d_lag1    0.007127
+            volume_ma30    0.006953
+             volume_ma7    0.006205
+     volatility_7d_lag1    0.005707
+              month_cos    0.005251
+           daily_return    0.004063
+extreme_return_count_7d    0.003600
+                day_sin    0.003410
+        return_momentum    0.002881
+    volatility_momentum    0.002162
+    return_acceleration    0.001505
+                day_cos    0.000635
+
+============================================================
+END OF RESULTS
+============================================================

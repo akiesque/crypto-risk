@@ -1,0 +1,235 @@
+{
+  "features": [
+    "price",
+    "market_cap",
+    "volume",
+    "daily_return",
+    "price_ma7",
+    "price_ma30",
+    "market_cap_rank",
+    "return_7d",
+    "return_14d",
+    "return_30d",
+    "return_momentum",
+    "return_acceleration",
+    "cumulative_return",
+    "volume_change",
+    "volume_ma7",
+    "volume_ma30",
+    "volume_momentum_7d",
+    "volume_volatility_ratio",
+    "price_volume_divergence",
+    "ma_ratio",
+    "volatility_momentum",
+    "volatility_7d_lag1",
+    "volatility_7d_lag7",
+    "volatility_7d_ma7",
+    "volatility_7d_ma30",
+    "realized_vol_7d",
+    "realized_vol_30d",
+    "realized_vol_7d_lag1",
+    "price_range_7d",
+    "price_range_30d",
+    "market_volatility",
+    "market_volatility_lag7",
+    "market_realized_vol",
+    "volatility_relative",
+    "realized_vol_relative",
+    "downside_vol_7d",
+    "extreme_return_count_7d",
+    "month_sin",
+    "month_cos",
+    "day_sin",
+    "day_cos"
+  ],
+  "target": "target_vol_7d",
+  "model_type": "XGBRegressor",
+  "model_params": {
+    "n_estimators": 1000,
+    "max_depth": 8,
+    "learning_rate": 0.001,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "min_child_weight": 3,
+    "gamma": 0.1,
+    "random_state": 42
+  },
+  "feature_importance": [
+    {
+      "feature": "price_volume_divergence",
+      "importance": 0.11147584021091461
+    },
+    {
+      "feature": "volatility_relative",
+      "importance": 0.09990807622671127
+    },
+    {
+      "feature": "realized_vol_30d",
+      "importance": 0.07845752686262131
+    },
+    {
+      "feature": "market_cap_rank",
+      "importance": 0.06959080696105957
+    },
+    {
+      "feature": "price_range_30d",
+      "importance": 0.06796637922525406
+    },
+    {
+      "feature": "realized_vol_relative",
+      "importance": 0.04793039336800575
+    },
+    {
+      "feature": "realized_vol_7d",
+      "importance": 0.04590000957250595
+    },
+    {
+      "feature": "volume_momentum_7d",
+      "importance": 0.040103718638420105
+    },
+    {
+      "feature": "price_range_7d",
+      "importance": 0.039394404739141464
+    },
+    {
+      "feature": "volatility_7d_ma30",
+      "importance": 0.03742406517267227
+    },
+    {
+      "feature": "market_cap",
+      "importance": 0.03340563550591469
+    },
+    {
+      "feature": "volatility_7d_lag7",
+      "importance": 0.03298556059598923
+    },
+    {
+      "feature": "price_ma7",
+      "importance": 0.026712698861956596
+    },
+    {
+      "feature": "month_sin",
+      "importance": 0.025286225602030754
+    },
+    {
+      "feature": "price",
+      "importance": 0.02189413271844387
+    },
+    {
+      "feature": "volume_change",
+      "importance": 0.02179833874106407
+    },
+    {
+      "feature": "market_volatility_lag7",
+      "importance": 0.018376478925347328
+    },
+    {
+      "feature": "return_30d",
+      "importance": 0.016346938908100128
+    },
+    {
+      "feature": "volatility_7d_ma7",
+      "importance": 0.01548114325851202
+    },
+    {
+      "feature": "market_volatility",
+      "importance": 0.01302530150860548
+    },
+    {
+      "feature": "price_ma30",
+      "importance": 0.012316875159740448
+    },
+    {
+      "feature": "ma_ratio",
+      "importance": 0.011439920403063297
+    },
+    {
+      "feature": "volume",
+      "importance": 0.010801224038004875
+    },
+    {
+      "feature": "return_14d",
+      "importance": 0.009744925424456596
+    },
+    {
+      "feature": "downside_vol_7d",
+      "importance": 0.009268323890864849
+    },
+    {
+      "feature": "market_realized_vol",
+      "importance": 0.00884010549634695
+    },
+    {
+      "feature": "volume_volatility_ratio",
+      "importance": 0.008572285994887352
+    },
+    {
+      "feature": "return_7d",
+      "importance": 0.008095682598650455
+    },
+    {
+      "feature": "cumulative_return",
+      "importance": 0.007958727888762951
+    },
+    {
+      "feature": "realized_vol_7d_lag1",
+      "importance": 0.007126682437956333
+    },
+    {
+      "feature": "volume_ma30",
+      "importance": 0.006953213829547167
+    },
+    {
+      "feature": "volume_ma7",
+      "importance": 0.006204651668667793
+    },
+    {
+      "feature": "volatility_7d_lag1",
+      "importance": 0.005707109346985817
+    },
+    {
+      "feature": "month_cos",
+      "importance": 0.0052508520893752575
+    },
+    {
+      "feature": "daily_return",
+      "importance": 0.004062925931066275
+    },
+    {
+      "feature": "extreme_return_count_7d",
+      "importance": 0.0036003966815769672
+    },
+    {
+      "feature": "day_sin",
+      "importance": 0.003409660654142499
+    },
+    {
+      "feature": "return_momentum",
+      "importance": 0.002880798652768135
+    },
+    {
+      "feature": "volatility_momentum",
+      "importance": 0.002161771757528186
+    },
+    {
+      "feature": "return_acceleration",
+      "importance": 0.0015053204260766506
+    },
+    {
+      "feature": "day_cos",
+      "importance": 0.0006348092574626207
+    }
+  ],
+  "evaluation_metrics": {
+    "rmse": 2.976448856449443,
+    "mae": 1.7686799815770033,
+    "r2": 0.17369645311360238
+  },
+  "data_info": {
+    "n_features": 41,
+    "n_train": 20543,
+    "n_val": 4399,
+    "n_test": 4481,
+    "n_cryptocurrencies": 95
+  }
+}
