@@ -41,6 +41,22 @@ df["date"] = pd.to_datetime(df["date"])
 coins = df["symbol"].unique().tolist()
 
 # -----------------------------
+# 2b. Load coin descriptions
+# -----------------------------
+try:
+    desc_df = pd.read_csv("data/crypto_descriptions.csv", engine="python")
+    # Normalize symbols to uppercase strings for robust lookup
+    desc_df["symbol"] = desc_df["symbol"].astype(str).str.upper()
+    desc_df["description_en"] = desc_df["description_en"].fillna("")
+    SYMBOL_TO_DESC = {
+        row["symbol"]: str(row["description_en"])
+        for _, row in desc_df.iterrows()
+    }
+except Exception:
+    # Fallback: no descriptions available
+    SYMBOL_TO_DESC = {}
+
+# -----------------------------
 # 3. Feature engineering function
 # -----------------------------
 def prepare_features(df_coin):
@@ -187,7 +203,26 @@ def risk_label(vol):
     return "High 🔴"
 
 # -----------------------------
-# 5. Prediction function
+# 5a. Description lookup function (lightweight, no model needed)
+# -----------------------------
+def get_coin_description(coin_symbol):
+    """Return description for a coin symbol immediately (no prediction)."""
+    if not coin_symbol:
+        return ""
+    symbol_key = str(coin_symbol).upper()
+    desc = SYMBOL_TO_DESC.get(symbol_key, "No description available for this asset yet.")
+    
+    # Strip any leading/trailing triple quotes that might be in the CSV data
+    desc = desc.strip()
+    if desc.startswith('"""') and desc.endswith('"""'):
+        desc = desc[3:-3].strip()
+    elif desc.startswith('"') and desc.endswith('"'):
+        desc = desc[1:-1].strip()
+    
+    return desc
+
+# -----------------------------
+# 5b. Prediction function (heavy computation)
 # -----------------------------
 def predict_volatility(coin_symbol):
     try:
@@ -233,17 +268,41 @@ def predict_volatility(coin_symbol):
     except Exception as e:
         raise
 
-iface = gr.Interface(
-    fn=predict_volatility,
-    inputs=gr.Dropdown(choices=coins, label="Select Cryptocurrency"),
-    outputs=[
-        gr.Number(label="Predicted 7-Day Volatility"),
-        gr.Textbox(label="Risk Level"),
-        gr.Image(type="pil", label="Feature Importance")
-    ],
-    title="Crypto Volatility & Risk Dashboard",
-    description="Predicts 7-day volatility for selected cryptocurrency and shows risk level."
-)
+with gr.Blocks(title="Crypto Volatility & Risk Dashboard") as iface:
+    gr.Markdown(
+        "## Crypto Volatility & Risk Dashboard\n"
+        "Predicts 7-day volatility for a selected cryptocurrency and shows the risk level and feature importance."
+    )
+
+    with gr.Row():
+        with gr.Column(scale=1):
+            coin_input = gr.Dropdown(choices=coins, label="Select Cryptocurrency")
+            predict_button = gr.Button("Predict Volatility")
+
+            output_description = gr.Textbox(
+                label="Asset Description",
+                lines=10,
+                interactive=False,
+            )
+
+        with gr.Column(scale=1):
+            vol_output = gr.Number(label="Predicted 7-Day Volatility")
+            risk_output = gr.Textbox(label="Risk Level")
+            img_output = gr.Image(type="pil", label="Feature Importance")
+
+    # Update description immediately when coin is selected (no prediction needed)
+    coin_input.change(
+        fn=get_coin_description,
+        inputs=coin_input,
+        outputs=output_description,
+    )
+
+    # Run prediction only when button is clicked
+    predict_button.click(
+        fn=predict_volatility,
+        inputs=coin_input,
+        outputs=[vol_output, risk_output, img_output],
+    )
 
 if __name__ == "__main__":
-    iface.launch()
+    iface.launch(theme=gr.themes.Default(font=[gr.themes.GoogleFont("Inter"), "Arial", "sans-serif"]))
