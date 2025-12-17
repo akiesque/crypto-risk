@@ -11,6 +11,7 @@ from xgboost import XGBRegressor
 import joblib  # for saving/loading model
 import json
 import os
+import base64
 
 # -----------------------------
 # 1. Load your trained model
@@ -55,6 +56,25 @@ try:
 except Exception:
     # Fallback: no descriptions available
     SYMBOL_TO_DESC = {}
+
+def load_image_base64(image_path):
+    """Load an image file and convert it to base64 data URI."""
+    try:
+        with open(image_path, "rb") as img_file:
+            img_data = img_file.read()
+            img_base64 = base64.b64encode(img_data).decode("utf-8")
+            # Determine image type from extension
+            ext = os.path.splitext(image_path)[1].lower()
+            mime_type = "image/png" if ext == ".png" else "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/png"
+            return f"data:{mime_type};base64,{img_base64}"
+    except Exception:
+        return ""
+
+# -----------------------------
+# 2c. Assets loaded /w Base64
+# -----------------------------
+
+COINGECKO_LOGO_BASE64 = load_image_base64("assets/priv/CG-Symbol@2x.png")
 
 # -----------------------------
 # 3. Feature engineering function
@@ -197,10 +217,10 @@ def prepare_features(df_coin):
 # -----------------------------
 def risk_label(vol):
     if vol < 0.25:
-        return "Low 🟢"
+        return '<div style="background-color: #4CAF50; color: white; padding: 12px 16px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 16px;">LOW RISK</div>'
     elif vol < 0.6:
-        return "Medium 🟡"
-    return "High 🔴"
+        return '<div style="background-color: #FFC107; color: #333; padding: 12px 16px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 16px;">MEDIUM RISK</div>'
+    return '<div style="background-color: #F44336; color: white; padding: 12px 16px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 16px;">HIGH RISK</div>'
 
 # -----------------------------
 # 5a. Description lookup function (lightweight, no model needed)
@@ -262,20 +282,29 @@ def predict_volatility(coin_symbol):
         buf.seek(0)
         img = Image.open(buf)
         plt.close()
+
+        rounded_vol = round(vol_pred, 5)
         
-        return float(vol_pred), risk, img
+        return rounded_vol, risk, img
         
     except Exception as e:
         raise
 
 with gr.Blocks(title="Crypto Volatility & Risk Dashboard") as iface:
     gr.Markdown(
-        "## Crypto Volatility & Risk Dashboard\n"
-        "Predicts 7-day volatility for a selected cryptocurrency and shows the risk level and feature importance."
+        "# Crypto Volatility & Risk Dashboard\n"
     )
 
     with gr.Row():
         with gr.Column(scale=1):
+            gr.Markdown(
+               """
+               Predicts 7-day volatility for a selected cryptocurrency 
+                and shows the risk level and feature importance.
+
+                This project was for educational purposes only.
+               """
+            )
             coin_input = gr.Dropdown(choices=coins, label="Select Cryptocurrency")
             predict_button = gr.Button("Predict Volatility")
 
@@ -285,12 +314,38 @@ with gr.Blocks(title="Crypto Volatility & Risk Dashboard") as iface:
                 interactive=False,
             )
 
+            gr.Markdown(
+                f"""
+                <small style="display:flex; align-items:center; gap:6px;">
+                    Data provided by
+                    <a href="https://www.coingecko.com/en/api" target="_blank" style="display:flex; align-items:center; gap:4px;">
+                        <img src="{COINGECKO_LOGO_BASE64}" width="18" />
+                        <b>CoinGecko</b>
+                    </a>
+                </small>
+                """
+            )
+
         with gr.Column(scale=1):
+            gr.Markdown(
+                """
+                ## What does this mean for me?
+                
+                This value represents the model’s estimate of how much the 
+                    selected cryptocurrency’s price is expected to fluctuate over the next 7 days.
+
+                A volatility score **is not** a price prediction.
+
+                **• Higher value** → larger price swings (higher risk)  
+                **• Lower value** → more stable price movement (lower risk) 
+
+                """
+            )
+
             vol_output = gr.Number(label="Predicted 7-Day Volatility")
-            risk_output = gr.Textbox(label="Risk Level")
+            risk_output = gr.HTML(label="Risk Level")
             img_output = gr.Image(type="pil", label="Feature Importance")
 
-    # Update description immediately when coin is selected (no prediction needed)
     coin_input.change(
         fn=get_coin_description,
         inputs=coin_input,
