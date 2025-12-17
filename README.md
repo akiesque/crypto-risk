@@ -75,15 +75,14 @@ While crypto volatility remains inherently unpredictable, the model demonstrates
 
 The Gradio interface provides:
 
-- Coin selection dropdown  
+- Coin selection dropdown
+- Coin description
 - Predicted 7-day volatility value  
 - Risk classification:
   - 🟢 Low  
   - 🟡 Medium  
   - 🔴 High  
 - Feature importance visualization  
-
-This makes the model **interpretable, interactive, and demo-ready**.
 
 ---
 
@@ -120,7 +119,7 @@ This makes the model **interpretable, interactive, and demo-ready**.
 - Quantile regression for uncertainty bands  
 - Coin embeddings or regime-aware modeling  
 - Ensemble models (XGBoost + LightGBM)  
-- Live price ingestion via APIs  
+- Add as an additional feature to [Cryptone](https://github.com/akiesque/Cryptone)
 
 ---
 
