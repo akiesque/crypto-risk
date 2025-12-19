@@ -88,7 +88,8 @@ The Gradio interface provides:
 
 ## 📂 Dataset
 
-- **Source:** Kaggle – Top 100 Cryptocurrencies Daily Price Data (2025)  
+- **Source:** Kaggle – Top 100 Cryptocurrencies Daily Price Data (2025)
+- **Coin Description Source** - CoinGecko
 - **Time Range:** December 2024 – Present  
 - **Granularity:** Daily  
 
